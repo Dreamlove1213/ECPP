@@ -1,0 +1,409 @@
+
+.section4 h2 {
+	padding-top: 2%;
+}
+
+.section4 h5 {
+	padding-top: 1%;
+}
+
+.about-snow {
+	overflow: hidden;
+}
+
+.about-snow-text1 {
+	width: 50%;
+	float: left;
+	padding: 10px 3% 10px 17%;
+	text-align: left;
+	overflow: visible;
+}
+
+.about-snow-text1 p {
+	margin-top: 20px;
+}
+
+.about-snow-img1 {
+	float: left;
+	width: 40%;
+	height: 300px;
+}
+
+.about-snow-img1 img {
+	width: 50%;
+}
+
+.fp-controlArrow.fp-prev {
+	left: 10%;
+}
+
+.fp-controlArrow.fp-next {
+	right: 10%;
+}
+
+
+/*联系我们*/
+
+.section5 {
+	text-align: center;
+	position: relative;
+	background: url(../img/tall_us_bg.png) no-repeat center;
+	background-size: cover;
+}
+
+.section5 h2 {
+	padding-top: 2%;
+	color: #f0efef;
+}
+
+.section5 h5 {
+	margin-top: 1%;
+	color: #a4a4a4;
+}
+
+.tallus-img-div {
+	margin-top: 4%;
+	overflow: hidden;
+}
+
+.tallus-img-div img {
+	width: 15%;
+}
+
+.tallus-img-div h5 {
+	margin-top: 3%;
+}
+
+.tallus-img-div div:nth-child(2) img {
+	width: 35%;
+}
+
+.tallus-img-div div:nth-child(4) img {
+	width: 35%;
+}
+
+.tallus_2weima_div {
+	overflow: hidden;
+	margin-top: 4%;
+}
+
+.tallus_2weima_div img {
+	width: 10%;
+}
+
+.tallus_2weima_div h5 {
+	color: #f0efef;
+}
+
+
+/*合作咨询*/
+
+.section6 {
+	text-align: center;
+	position: relative;
+}
+
+.section6 h2 {
+	color: #565657;
+}
+
+.section6 h5 {
+	margin-top: 1%;
+	color: #5f5f5f;
+}
+
+.hezuo-row1 {
+	padding-top: 4%;
+	display: block;
+	float: left;
+	width: 100%;
+}
+
+.hezuo-row1 h4 {
+	text-align: right;
+}
+
+.radio-div {
+	text-align: left;
+}
+
+.radio-div input {
+	margin: 0 15px;
+	display: none;
+}
+
+.back-to-top{
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	border: 1px solid #269ABC;
+	border-radius: 5px;
+	z-index: 99999;
+    cursor: pointer;
+    overflow: hidden;
+	color: #269ABC;
+	padding: 5px;
+}
+
+
+
+input,
+label {
+	vertical-align: baseline;
+}
+
+label {
+	height: 30px;
+	padding-left: 7%;
+	padding-right: 5%;
+	cursor: pointer;
+	background: url(../img/radio_unselect.png) no-repeat left top;
+}
+
+label.checked {
+	background: url(../img/radio_select.png) no-repeat left top;
+}
+
+.hezuo-text {
+	padding-top: 4%;
+	overflow: hidden;
+	width: 100%;
+}
+
+.hezuo-text2 {
+	padding-top: 1%;
+	overflow: hidden;
+	width: 100%;
+}
+
+.hezuo-text2 input {
+	margin-left: 0px;
+}
+
+.dingzhi-div {
+	margin-top: 4%;
+}
+
+.dingzhi-div img {
+	width: 15%;
+}
+
+.bottom-text {
+	position: absolute;
+	margin: 0 auto;
+	right: 0;
+	left: 0;
+	bottom: 2%;
+}
+
+a:hover {
+	color: #feec50;
+}
+
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
+	color: #feec50;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li>a:focus {
+	color: #feec50;
+	background-color: transparent;
+}
+
+
+/*关于动画*/
+
+
+/*page1*/
+
+.page1-img-one {
+	/*transition: all 2s;
+	transform: scale(0.8);*/
+  animation-duration: 2.5s;
+}
+    
+.page1-img-one-active {
+	transform: scale(1.0);
+}
+
+.page1-img-left {
+	transition: all 1.5s;
+	position: absolute;
+	left: 0;
+	/*animation-duration: 2.0s;
+	margin-right: 2%;*/
+}
+
+.page1-img-left-active {
+	transform: translateX(140%);
+}
+
+.page1-img-right{
+	transition: all 1.5s;
+	position: absolute;
+	right: 0;
+	/*animation-duration: 2.0s;*/
+}
+
+.page1-img-right-active {
+	transform: translateX(-140%);
+}
+
+.btn-dingzhi{
+	animation-duration: 2s;
+	animation-delay: .5s;
+}
+
+/*page2*/
+.h2-anim{
+	animation-duration: 2.2s;
+}
+.h5-anim{
+	animation-duration: 2.0s;
+	animation-delay: .2s;
+}
+
+.page2-img-hover{
+	animation-duration: 2.0s;
+}
+
+.page2-img-item {
+	transition: all 1.0s;
+}
+
+.page2-img-item-active {
+	transform: scale(1.2);
+	box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+/*page3*/
+.page3-h2-anim{
+	animation-duration: 2.2s;
+}
+.page3-h5-anim{
+	animation-duration: 2.0s;
+	animation-delay: .2s;
+}
+.companyinfo.page3-h2-anim{
+	animation-duration: 6s;
+	animation-delay: .3s;
+}
+.page3-hr-left{
+	animation-duration: 2.0s;
+}
+
+.page3-hr-right{
+	animation-duration: 2.0s;
+}
+
+.page3-big-img-left{
+	animation-duration: 1.5s;
+	animation-delay: .5s;
+}
+.page3-big-img-right{
+	animation-duration: 1.5s;
+	animation-delay: .5s;
+}
+.page3-img-div-activie .col-md-2:nth-child(1){
+	animation-duration: 1.5s;
+	animation-delay: .6s;
+}
+.page3-img-div-activie .col-md-2:nth-child(2){
+	animation-duration: 1.5s;
+	animation-delay: .8s;
+}
+.page3-img-div-activie .col-md-2:nth-child(3){
+	animation-duration: 1.5s;
+	animation-delay: 1.0s;
+}
+.page3-img-div-activie .col-md-2:nth-child(4){
+	animation-duration: 1.5s;
+	animation-delay: 1.2s;
+}
+.page3-img-div-activie .col-md-2:nth-child(5){
+	animation-duration: 1.5s;
+	animation-delay: 1.4s;
+}
+.page3-img-div-activie .col-md-2:nth-child(6){
+	animation-duration: 1.5s;
+	animation-delay: 1.6s;
+}
+
+
+/*page4*/
+.companyinfo p{
+	line-height: 40px;
+	font-size: 20px;
+	color: white;
+}
+.page4-h2-anim{
+	animation-duration: 2.2s;
+}
+.page4-h5-anim{
+	animation-duration: 2.0s;
+	animation-delay: .2s;
+}
+
+/*page5*/
+.page5-h2-anim{
+	animation-duration: 2.2s;
+}
+.page5-h5-anim{
+	animation-duration: 2.0s;
+	animation-delay: .2s;
+}
+.page5-img-div-active div:nth-child(2){
+	animation-duration: 1.5s;
+	animation-delay: .2s;
+}
+.page5-img-div-active div:nth-child(3){
+	animation-duration: 1.5s;
+	animation-delay: .4s;
+}
+.page5-img-div-active div:nth-child(4){
+	animation-duration: 1.5s;
+	animation-delay: .6s;
+}
+.page5-erweima-img{
+	animation-duration: 1.5s;
+	animation-delay: .5s;
+}
+
+/*page6*/
+.page6-h2-anim{
+	animation-duration: 2.2s;
+}
+.page6-h5-anim{
+	animation-duration: 2.0s;
+	animation-delay: .2s;
+}
+.page6-radio-div-active{
+	animation-duration: 1.5s;
+	animation-delay: .2s;
+}
+.page6-btn-active{
+	animation-duration: 1.5s;
+	animation-delay: .1s;
+}
+.hezuo-text .col-md-3:nth-child(2){
+	animation-duration: 1.5s;
+	animation-delay: .1s;
+}
+.hezuo-text .col-md-3:nth-child(3){
+	animation-duration: 1.5s;
+	animation-delay: .3s;
+}
+.hezuo-text2{
+	animation-duration: 1.5s;
+	animation-delay: .1s;
+}
+#footer_mi{
+	width: 100%;
+	padding: 10px 0;
+	background-color: black;
+	text-align: center;
+}

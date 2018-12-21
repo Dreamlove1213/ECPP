@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.ecpp.dao.PlaninformationDao">
+    
+	<sql id="planinformationColumns">
+		a.id AS "id",
+		a.plantitle AS "plantitle",
+		a.problemdescription AS "problemdescription",
+		a.plantype AS "plantype",
+		a.overallgoals AS "overallgoals",
+		a.planprincipal AS "planprincipal",
+		a.effectivenessmoney1 AS "effectivenessmoney1",
+		a.effectivenessmoney2 AS "effectivenessmoney2",
+		a.effectivenessmoney3 AS "effectivenessmoney3",
+		a.effectivenessmoney4 AS "effectivenessmoney4",
+		a.effectivenessmoney5 AS "effectivenessmoney5",
+		a.effectivenessmoney6 AS "effectivenessmoney6",
+		a.effremarks1 AS "effremarks1",
+		a.effremarks2 AS "effremarks2",
+		a.effremarks3 AS "effremarks3",
+		a.effremarks4 AS "effremarks4",
+		a.effremarks5 AS "effremarks5",
+		a.effremarks6 AS "effremarks6",
+		a.plannedprogress AS "plannedprogress",
+		a.situationandeffect AS "situationandeffect",
+		a.selfevaluation AS "selfevaluation",
+		a.selfevaluationscore AS "selfevaluationscore",
+		a.averagescore AS "averagescore",
+		a.evaluationdate AS "evaluationdate",
+		a.groupproposal AS "groupproposal.id",
+		a.outgroupproposaldate AS "outgroupproposaldate",
+		a.organisationalmeasures AS "organisationalmeasures",
+		a.evaluationscore AS "evaluationscore",
+		a.organisationadodate AS "organisationadodate",
+		a.status AS "status",
+		a.shstatus AS "shstatus",
+		a.threesement AS "threesement",
+		a.foursegment AS "foursegment",
+		a.attribute1 AS "attribute1",
+		a.attribute2 AS "attribute2",
+		a.attribute3 AS "attribute3",
+		a.attribute4 AS "attribute4",
+		a.attribute5 AS "attribute5",
+		a.attribute6 AS "attribute6",
+		a.attribute7 AS "attribute7",
+		a.attribute8 AS "attribute8",
+		a.attribute9 AS "attribute9",
+		a.attribute10 AS "attribute10",
+		a.attribute11 AS "attribute11",
+		a.attribute12 AS "attribute12",
+		a.tijiaotime AS "tijiaotime",
+		a.unit AS "unit.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks",
+		o.name AS "unit.name",
+		o.type AS "unit.type",
+		o.remarks AS "unit.remarks",
+		o.plate AS "unit.plate",
+		u.name AS "updateBy.name"
+	</sql>
+	
+	<sql id="planinformationJoins">
+		LEFT JOIN sys_office o ON o.id = a.unit
+		LEFT JOIN sys_user u ON u.id = a.update_by
+	</sql>
+    
+	<select id="get" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+    
+	<select id="countByType" resultType="java.lang.Integer">
+		SELECT 
+			count(*)
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		WHERE a.plantype = #{plantype}
+		AND a.del_flag = '0' AND a.status = '1' AND a.shstatus = '1'
+	</select>
+
+	<select id="getCountByPlantype" resultType="java.lang.Integer">
+		SELECT COUNT(p.id) FROM ecpp_planinformation p WHERE p.unit = #{officeId} AND p.planType = #{type} AND p.del_flag = '0'
+	</select>
+
+	<select id="coutPlanAndIm" resultType="Planinformation">
+		SELECT COUNT(p.id) as num1,
+		(SELECT COUNT(id) FROM
+			(
+				SELECT i.id FROM ecpp_improvements i
+				WHERE i.planId in (SELECT p.id FROM ecpp_planinformation p WHERE p.unit in (SELECT o1.id FROM sys_office o1 WHERE o1.del_flag = '0') and p.del_flag = '0')
+				and i.del_flag = '0'
+			) as id
+		) as num2
+		FROM ecpp_planinformation p
+		WHERE p.unit in (SELECT op.id FROM sys_office op WHERE op.del_flag = '0')  and p.del_flag = '0' AND p.`status` = '1' AND p.shstatus = '1'
+	</select>
+
+	<select id="getPlanCount" resultType="Planinformation">
+		SELECT COUNT(p.id) as num1,
+		(SELECT COUNT(id) FROM
+			(
+				SELECT i.id FROM ecpp_improvements i
+				WHERE i.planId in (SELECT p.id FROM ecpp_planinformation p WHERE p.unit in (SELECT o1.id FROM sys_office o1 WHERE o1.type =#{type} and o1.del_flag = '0') and p.del_flag = '0')
+				and i.del_flag = '0'
+			) as id
+		) as num2
+		FROM ecpp_planinformation p
+		WHERE p.unit in (SELECT op.id FROM sys_office op WHERE op.type =#{type} and op.del_flag = '0')  and p.del_flag = '0' AND p.`status` = '1' AND p.shstatus = '1'
+	</select>
+	
+	
+	<select id="findList" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		,(
+		SELECT COUNT(i.id) FROM ecpp_improvements i WHERE a.ID = i.planId
+		) AS imNum
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE 
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE 
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE 
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE 
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.plate != null and unit.plate != ''">
+				AND o.plate LIKE
+					<if test="dbName == 'oracle'">'%'||#{unit.plate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{unit.plate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{unit.plate},'%')</if>
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="attribute12 != null and attribute12 != ''">
+				AND AND a.attribute12=#{attribute12}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.plannedprogress DESC ,imNum DESC,o.code DESC
+			</when>
+			<otherwise>
+				ORDER BY a.plannedprogress DESC ,imNum DESC,o.code DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListtijiaotimenotnull" resultType="Planinformation">
+		SELECT
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.tijiaotime IS NOT NULL
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.plate != null and unit.plate != ''">
+				AND o.plate LIKE
+					<if test="dbName == 'oracle'">'%'||#{unit.plate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{unit.plate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{unit.plate},'%')</if>
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="attribute12 != null and attribute12 != ''">
+				AND AND a.attribute12=#{attribute12}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.plannedprogress DESC ,o.code DESC
+			</when>
+			<otherwise>
+				ORDER BY a.plannedprogress DESC ,o.code DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListButShstatus" resultType="Planinformation">
+		SELECT
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus != #{shstatus} AND a.shstatus != '0'
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.plate != null and unit.plate != ''">
+				AND o.plate LIKE
+					<if test="dbName == 'oracle'">'%'||#{unit.plate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{unit.plate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{unit.plate},'%')</if>
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="attribute12 != null and attribute12 != ''">
+				AND AND a.attribute12=#{attribute12}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.plannedprogress DESC ,o.code DESC
+			</when>
+			<otherwise>
+				ORDER BY a.plannedprogress DESC ,o.code DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListByqiyeGroupByUnit" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="attribute12 != null and attribute12 != ''">
+				AND a.attribute12=#{attribute12}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+		</where>
+			GROUP BY unit
+	</select>
+	
+	<select id="findList1" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE 
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE 
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE 
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE 
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findDeletePage" resultType="Planinformation">
+		SELECT
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_DELETE}
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy},a.update_date DESC
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findList2" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.attribute12='1'
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE 
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE 
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE 
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE 
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="unit != null and unit.plate != null and unit.plate != ''">
+				AND o.plate = #{unit.plate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListBymbjd" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="plantitle != null and plantitle != ''">
+				AND a.plantitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{plantitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{plantitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{plantitle},'%')</if>
+			</if>
+			<if test="problemdescription != null and problemdescription != ''">
+				AND a.problemdescription LIKE 
+					<if test="dbName == 'oracle'">'%'||#{problemdescription}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{problemdescription}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{problemdescription},'%')</if>
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="overallgoals != null and overallgoals != ''">
+				AND a.overallgoals LIKE 
+					<if test="dbName == 'oracle'">'%'||#{overallgoals}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{overallgoals}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{overallgoals},'%')</if>
+			</if>
+			<if test="planprincipal != null and planprincipal != ''">
+				AND a.planprincipal LIKE 
+					<if test="dbName == 'oracle'">'%'||#{planprincipal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{planprincipal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{planprincipal},'%')</if>
+			</if>
+			<if test="plannedprogress != null and plannedprogress != ''">
+				AND a.plannedprogress = #{plannedprogress}
+			</if>
+			<if test="situationandeffect != null and situationandeffect != ''">
+				AND a.situationandeffect = #{situationandeffect}
+			</if>
+			<if test="selfevaluation != null and selfevaluation != ''">
+				AND a.selfevaluation = #{selfevaluation}
+			</if>
+			<if test="selfevaluationscore != null and selfevaluationscore != ''">
+				AND a.selfevaluationscore = #{selfevaluationscore}
+			</if>
+			<if test="evaluationdate != null and evaluationdate != ''">
+				AND a.evaluationdate LIKE 
+					<if test="dbName == 'oracle'">'%'||#{evaluationdate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{evaluationdate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{evaluationdate},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="shstatus != null and shstatus != ''">
+				AND a.shstatus = #{shstatus}
+			</if>
+			<if test="threesement != null and threesement != ''">
+				AND a.threesement = #{threesement}
+			</if>
+			<if test="foursegment != null and foursegment != ''">
+				AND a.foursegment = #{foursegment}
+			</if>
+			<if test="unit != null and unit != ''">
+				AND a.unit = #{unit.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.plannedprogress DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListByOrderOffice" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.plantype = #{plantype} GROUP BY a.unit
+	</select>
+
+	<select id="findListByOrderOfficeSegMent2" resultType="Planinformation">
+		SELECT COUNT(unit) AS "numUnit",
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="status != null and status != ''">
+			AND a.status = #{status}
+		</if>
+		<if test="shstatus != null and shstatus != ''">
+			AND a.shstatus = #{shstatus}
+		</if>
+		<if test="threesement != null and threesement != ''">
+			AND a.threesement = #{threesement}
+		</if>
+		<if test="foursegment != null and foursegment != ''">
+			AND a.foursegment = #{foursegment}
+		</if>
+		GROUP BY a.unit
+	</select>
+	
+	<select id="findListByCompany" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.status = '1' AND a.shstatus = '1'
+		<if test="unit != null and unit.type != null and unit.type != ''">
+			AND o.type = #{unit.type}
+		</if>
+		GROUP BY a.unit
+	</select>
+	
+	<select id="findAllList" resultType="Planinformation">
+		SELECT 
+			<include refid="planinformationColumns"/>
+		FROM ecpp_planinformation a
+		<include refid="planinformationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ecpp_planinformation(
+			id,
+			plantitle,
+			problemdescription,
+			plantype,
+			overallgoals,
+			planprincipal,
+			effectivenessmoney1,
+			effectivenessmoney2,
+			effectivenessmoney3,
+			effectivenessmoney4,
+			effectivenessmoney5,
+			effectivenessmoney6,
+			effremarks1,
+			effremarks2,
+			effremarks3,
+			effremarks4,
+			effremarks5,
+			effremarks6,
+			plannedprogress,
+			situationandeffect,
+			selfevaluation,
+			selfevaluationscore,
+			averagescore,
+			evaluationdate,
+			groupproposal,
+			outgroupproposaldate,
+			organisationalmeasures,
+			evaluationscore,
+			organisationadodate,
+			status,
+			shstatus,
+			threesement,
+			foursegment,
+			attribute1,
+			attribute2,
+			attribute3,
+			attribute4,
+			attribute5,
+			attribute6,
+			attribute7,
+			attribute8,
+			attribute9,
+			attribute10,
+			attribute11,
+			attribute12,
+			tijiaotime,
+			unit,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{plantitle},
+			#{problemdescription},
+			#{plantype},
+			#{overallgoals},
+			#{planprincipal},
+			#{effectivenessmoney1},
+			#{effectivenessmoney2},
+			#{effectivenessmoney3},
+			#{effectivenessmoney4},
+			#{effectivenessmoney5},
+			#{effectivenessmoney6},
+			#{effremarks1},
+			#{effremarks2},
+			#{effremarks3},
+			#{effremarks4},
+			#{effremarks5},
+			#{effremarks6},
+			#{plannedprogress},
+			#{situationandeffect},
+			#{selfevaluation},
+			#{selfevaluationscore},
+			#{averagescore},
+			#{evaluationdate},
+			#{groupproposal.id},
+			#{outgroupproposaldate},
+			#{organisationalmeasures},
+			#{evaluationscore},
+			#{organisationadodate},
+			#{status},
+			#{shstatus},
+			#{threesement},
+			#{foursegment},
+			#{attribute1},
+			#{attribute2},
+			#{attribute3},
+			#{attribute4},
+			#{attribute5},
+			#{attribute6},
+			#{attribute7},
+			#{attribute8},
+			#{attribute9},
+			#{attribute10},
+			#{attribute11},
+			#{attribute12},
+			#{tijiaotime},
+			#{unit.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_planinformation SET 	
+			plantitle = #{plantitle},
+			problemdescription = #{problemdescription},
+			plantype = #{plantype},
+			overallgoals = #{overallgoals},
+			planprincipal = #{planprincipal},
+			effectivenessmoney1 = #{effectivenessmoney1},
+			effectivenessmoney2 = #{effectivenessmoney2},
+			effectivenessmoney3 = #{effectivenessmoney3},
+			effectivenessmoney4 = #{effectivenessmoney4},
+			effectivenessmoney5 = #{effectivenessmoney5},
+			effectivenessmoney6 = #{effectivenessmoney6},
+			effremarks1 = #{effremarks1},
+			effremarks2 = #{effremarks2},
+			effremarks3 = #{effremarks3},
+			effremarks4 = #{effremarks4},
+			effremarks5 = #{effremarks5},
+			effremarks6 = #{effremarks6},
+			plannedprogress = #{plannedprogress},
+			situationandeffect = #{situationandeffect},
+			selfevaluation = #{selfevaluation},
+			selfevaluationscore = #{selfevaluationscore},
+			averagescore = #{averagescore},
+			evaluationdate = #{evaluationdate},
+			groupproposal = #{groupproposal.id},
+			outgroupproposaldate = #{outgroupproposaldate},
+			organisationalmeasures = #{organisationalmeasures},
+			evaluationscore = #{evaluationscore},
+			organisationadodate = #{organisationadodate},
+			status = #{status},
+			shstatus = #{shstatus},
+			threesement = #{threesement},
+			foursegment = #{foursegment},
+			attribute1 = #{attribute1},
+			attribute2 = #{attribute2},
+			attribute3 = #{attribute3},
+			attribute4 = #{attribute4},
+			attribute5 = #{attribute5},
+			attribute6 = #{attribute6},
+			attribute7 = #{attribute7},
+			attribute8 = #{attribute8},
+			attribute9 = #{attribute9},
+			attribute10 = #{attribute10},
+			attribute11 = #{attribute11},
+			attribute12 = #{attribute12},
+			tijiaotime = #{tijiaotime},
+			unit = #{unit.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			del_flag = #{delFlag},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_planinformation SET 
+			del_flag = #{DEL_FLAG_DELETE},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+
+	<update id="realDelete">
+		DELETE FROM ecpp_planinformation WHERE id = #{id}
+	</update>
+	
+</mapper>

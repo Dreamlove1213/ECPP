@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.config.dao.EcppConfigDao">
+    
+	<sql id="ecppConfigColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.iscurrentactivity AS "iscurrentactivity",
+		a.isstart AS "isstart",
+		a.firstname AS "firstname",
+		a.firstisstart AS "firstisstart",
+		a.firststartdate AS "firststartdate",
+		a.firstenddate AS "firstenddate",
+		a.secondname AS "secondname",
+		a.secondisstart AS "secondisstart",
+		a.secondstartdate AS "secondstartdate",
+		a.secondenddate AS "secondenddate",
+		a.thirdname AS "thirdname",
+		a.thirdisstart AS "thirdisstart",
+		a.thirdstartdate AS "thirdstartdate",
+		a.thirdenddate AS "thirdenddate",
+		a.fouthname AS "fouthname",
+		a.fouthisstart AS "fouthisstart",
+		a.fouthstartdate AS "fouthstartdate",
+		a.fouthenddate AS "fouthenddate",
+		a.code AS "code",
+		a.activitycreatedate AS "activitycreatedate",
+		a.year AS "year",
+		a.attribute1 AS "attribute1",
+		a.attribute2 AS "attribute2",
+		a.attribute3 AS "attribute3",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="ecppConfigJoins">
+	</sql>
+    
+	<select id="get" resultType="EcppConfig">
+		SELECT 
+			<include refid="ecppConfigColumns"/>
+		FROM ecpp_config a
+		<include refid="ecppConfigJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="EcppConfig">
+		SELECT 
+			<include refid="ecppConfigColumns"/>
+		FROM ecpp_config a
+		<include refid="ecppConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="iscurrentactivity != null and iscurrentactivity != ''">
+				AND a.iscurrentactivity = #{iscurrentactivity}
+			</if>
+			<if test="isstart != null and isstart != ''">
+				AND a.isstart = #{isstart}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="EcppConfig">
+		SELECT 
+			<include refid="ecppConfigColumns"/>
+		FROM ecpp_config a
+		<include refid="ecppConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ecpp_config(
+			id,
+			name,
+			iscurrentactivity,
+			isstart,
+			firstname,
+			firstisstart,
+			firststartdate,
+			firstenddate,
+			secondname,
+			secondisstart,
+			secondstartdate,
+			secondenddate,
+			thirdname,
+			thirdisstart,
+			thirdstartdate,
+			thirdenddate,
+			fouthname,
+			fouthisstart,
+			fouthstartdate,
+			fouthenddate,
+			code,
+			activitycreatedate,
+			year,
+			attribute1,
+			attribute2,
+			attribute3,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{name},
+			#{iscurrentactivity},
+			#{isstart},
+			#{firstname},
+			#{firstisstart},
+			#{firststartdate},
+			#{firstenddate},
+			#{secondname},
+			#{secondisstart},
+			#{secondstartdate},
+			#{secondenddate},
+			#{thirdname},
+			#{thirdisstart},
+			#{thirdstartdate},
+			#{thirdenddate},
+			#{fouthname},
+			#{fouthisstart},
+			#{fouthstartdate},
+			#{fouthenddate},
+			#{code},
+			#{activitycreatedate},
+			#{year},
+			#{attribute1},
+			#{attribute2},
+			#{attribute3},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_config SET 	
+			name = #{name},
+			iscurrentactivity = #{iscurrentactivity},
+			isstart = #{isstart},
+			firstname = #{firstname},
+			firstisstart = #{firstisstart},
+			firststartdate = #{firststartdate},
+			firstenddate = #{firstenddate},
+			secondname = #{secondname},
+			secondisstart = #{secondisstart},
+			secondstartdate = #{secondstartdate},
+			secondenddate = #{secondenddate},
+			thirdname = #{thirdname},
+			thirdisstart = #{thirdisstart},
+			thirdstartdate = #{thirdstartdate},
+			thirdenddate = #{thirdenddate},
+			fouthname = #{fouthname},
+			fouthisstart = #{fouthisstart},
+			fouthstartdate = #{fouthstartdate},
+			fouthenddate = #{fouthenddate},
+			code = #{code},
+			activitycreatedate = #{activitycreatedate},
+			year = #{year},
+			attribute1 = #{attribute1},
+			attribute2 = #{attribute2},
+			attribute3 = #{attribute3},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_config SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

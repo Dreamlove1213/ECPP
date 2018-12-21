@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.stion.dao.StrformationitemDao">
+    
+	<sql id="strformationitemColumns">
+		a.id AS "id",
+		a.nane AS "nane",
+		a.oa AS "oa",
+		a.bumen AS "bumen",
+		a.zhiwei AS "zhiwei",
+		a.dianhua AS "dianhua",
+		a.shouji AS "shouji",
+		a.youxiang AS "youxiang",
+		a.strformation AS "strformation.id",
+		a.attribute1 AS "attribute1",
+		a.attribute2 AS "attribute2",
+		a.attribute3 AS "attribute3",
+		a.attribute4 AS "attribute4",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="strformationitemJoins">
+		LEFT JOIN ecpp_strformation b ON b.id = a.strformation
+	</sql>
+    
+	<select id="get" resultType="Strformationitem">
+		SELECT 
+			<include refid="strformationitemColumns"/>
+		FROM ecpp_strformationitem a
+		<include refid="strformationitemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Strformationitem">
+		SELECT 
+			<include refid="strformationitemColumns"/>
+		FROM ecpp_strformationitem a
+		<include refid="strformationitemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="nane != null and nane != ''">
+				AND a.nane = #{nane}
+			</if>
+			<if test="oa != null and oa != ''">
+				AND a.oa = #{oa}
+			</if>
+			<if test="bumen != null and bumen != ''">
+				AND a.bumen = #{bumen}
+			</if>
+			<if test="zhiwei != null and zhiwei != ''">
+				AND a.zhiwei = #{zhiwei}
+			</if>
+			<if test="dianhua != null and dianhua != ''">
+				AND a.dianhua = #{dianhua}
+			</if>
+			<if test="shouji != null and shouji != ''">
+				AND a.shouji = #{shouji}
+			</if>
+			<if test="youxiang != null and youxiang != ''">
+				AND a.youxiang = #{youxiang}
+			</if>
+			<if test="strformation != null and strformation.id != null and strformation.id != ''">
+				AND a.strformation = #{strformation.id}
+			</if>
+			<if test="attribute1 != null and attribute1 != ''">
+				AND a.attribute1 = #{attribute1}
+			</if>
+			<if test="attribute2 != null and attribute2 != ''">
+				AND a.attribute2 = #{attribute2}
+			</if>
+			<if test="attribute3 != null and attribute3 != ''">
+				AND a.attribute3 = #{attribute3}
+			</if>
+			<if test="attribute4 != null and attribute4 != ''">
+				AND a.attribute4 = #{attribute4}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Strformationitem">
+		SELECT 
+			<include refid="strformationitemColumns"/>
+		FROM ecpp_strformationitem a
+		<include refid="strformationitemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ecpp_strformationitem(
+			id,
+			nane,
+			oa,
+			bumen,
+			zhiwei,
+			dianhua,
+			shouji,
+			youxiang,
+			strformation,
+			attribute1,
+			attribute2,
+			attribute3,
+			attribute4,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{nane},
+			#{oa},
+			#{bumen},
+			#{zhiwei},
+			#{dianhua},
+			#{shouji},
+			#{youxiang},
+			#{strformation.id},
+			#{attribute1},
+			#{attribute2},
+			#{attribute3},
+			#{attribute4},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_strformationitem SET 
+			<if test="nane != null and nane != ''">
+				nane = #{nane},
+			</if>
+			<if test="oa != null and oa != ''">
+				oa = #{oa},
+			</if>
+			<if test="bumen != null and bumen != ''">
+				bumen = #{bumen},
+			</if>
+			<if test="zhiwei != null and zhiwei != ''">
+				zhiwei = #{zhiwei},
+			</if>
+			<if test="dianhua != null and dianhua != ''">
+				dianhua = #{dianhua},
+			</if>
+			<if test="shouji != null and shouji != ''">
+				shouji = #{shouji},
+			</if>
+			<if test="youxiang != null and youxiang != ''">
+				youxiang = #{youxiang},
+			</if>
+			<if test="strformation != null and strformation.id != null and strformation.id != ''">
+				strformation = #{strformation.id},
+			</if>
+			<if test="attribute1 != null and attribute1 != ''">
+				attribute1 = #{attribute1},
+			</if>
+			<if test="attribute2 != null and attribute2 != ''">
+				attribute2 = #{attribute2},
+			</if>
+			<if test="attribute3 != null and attribute3 != ''">
+				attribute3 = #{attribute3},
+			</if>
+			<if test="attribute4 != null and attribute4 != ''">
+				attribute4 = #{attribute4},
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				create_by = #{createBy.id},
+			</if>
+			<if test="createDate != null and createDate != ''">
+				create_date = #{createDate},
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				update_date = #{updateDate},
+			</if>
+			<if test="remarks != null and remarks != ''">
+				remarks = #{remarks},
+			</if>	
+				update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_strformationitem SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE strformation = #{strformation.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

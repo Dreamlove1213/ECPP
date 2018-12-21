@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.ecpp.dao.StatisticsDao">
+    
+	<sql id="statisticsColumns">
+		a.id AS "id",
+		a.officename AS "officename",
+		a.officetype AS "officetype",
+		a.plantype AS "plantype",
+		a.muprogress AS "muprogress",
+		a.sjprogress AS "sjprogress",
+		a.munum AS "munum",
+		a.gjxnum AS "gjxnum",
+		a.mbtype1 AS "mbtype1",
+		a.mbtype2 AS "mbtype2",
+		a.mbtype3 AS "mbtype3",
+		a.mbtype4 AS "mbtype4",
+		a.gjxtype1 AS "gjxtype1",
+		a.gjxtype2 AS "gjxtype2",
+		a.gjxtype3 AS "gjxtype3",
+		a.gjxtype4 AS "gjxtype4",
+		a.attribute3 AS "attribute3",
+		a.attribute4 AS "attribute4",
+		a.attribute5 AS "attribute5",
+		a.attribute6 AS "attribute6",
+		a.unit AS "unit",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks",
+		o.name AS "unit.name",
+		o.id AS "unit.id"
+	</sql>
+	
+	<sql id="statisticsJoins">
+		LEFT JOIN sys_office o ON o.id = a.unit
+	</sql>
+    
+	<select id="getStatisticsData" resultType="Statistics">
+		SELECT
+            a.officename AS "officename",
+            a.muprogress AS "muprogress",
+            a.sjprogress AS "sjprogress",
+            a.munum AS "munum",
+            a.gjxnum AS "gjxnum",
+            sss.cout AS "attribute3"
+		FROM
+		  ecpp_statistics a
+		LEFT JOIN (
+            SELECT
+            COUNT(i.unit) cout,
+            i.unit unit
+            FROM
+            ecpp_improvements i
+            WHERE
+            i.improvementProgress = 100
+            GROUP BY
+            i.unit
+		) sss
+		ON sss.unit = a.unit
+	</select>
+
+	<select id="getStatisticsDataPage" resultType="Statistics">
+		SELECT
+            a.officename AS "officename",
+            a.muprogress AS "muprogress",
+            a.sjprogress AS "sjprogress",
+            a.munum AS "munum",
+            a.gjxnum AS "gjxnum",
+            sss.cout AS "attribute3"
+		FROM
+		  ecpp_statistics a
+		LEFT JOIN (
+            SELECT
+            COUNT(i.unit) cout,
+            i.unit unit
+            FROM
+            ecpp_improvements i
+            WHERE
+            i.improvementProgress = 100
+            GROUP BY
+            i.unit
+		) sss
+		ON sss.unit = a.unit LIMIT #{pageIndex},#{pageSize}
+	</select>
+
+	<select id="get" resultType="Statistics">
+		SELECT
+			<include refid="statisticsColumns"/>
+		FROM ecpp_statistics a
+		<include refid="statisticsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getOneResult" resultType="Statistics">
+		SELECT
+			<include refid="statisticsColumns"/>
+		FROM ecpp_statistics a
+		<include refid="statisticsJoins"/>
+		WHERE a.unit = #{unitId}
+	</select>
+
+	<select id="countByType" resultType="java.lang.Integer">
+		SELECT SUM(s.munum) from ecpp_statistics s WHERE s.planType = #{type}
+	</select>
+
+	<select id="getCountMbByOfficeAndBk" resultType="java.lang.Integer">
+		SELECT SUM(s.munum) FROM ecpp_statistics s WHERE s.officetype = #{officeType} AND s.planType LIKE concat('%',#{bk},'%')
+	</select>
+
+	<select id="getCountGjxByOfficeAndBk" resultType="java.lang.Integer">
+		SELECT SUM(s.gjxnum) FROM ecpp_statistics s WHERE s.officetype = #{officeType} AND s.planType LIKE concat('%',#{bk},'%')
+	</select>
+
+	<select id="getSumByPlantype" resultType="java.lang.Integer">
+		SELECT SUM(${planType}) FROM ecpp_statistics
+	</select>
+
+	<select id="getSumByOfficeType" resultType="java.lang.Integer">
+		SELECT SUM(${numname}) FROM ecpp_statistics WHERE officetype = ${officeType}
+	</select>
+	
+	<select id="findList" resultType="Statistics">
+		SELECT 
+			<include refid="statisticsColumns"/>
+		FROM ecpp_statistics a
+		<include refid="statisticsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="officename != null and officename != ''">
+				AND a.officename = #{officename}
+			</if>
+			<if test="officetype != null and officetype != ''">
+				AND a.officetype = #{officetype}
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="muprogress != null and muprogress != ''">
+				AND a.muprogress = #{muprogress}
+			</if>
+			<if test="sjprogress != null and sjprogress != ''">
+				AND a.sjprogress = #{sjprogress}
+			</if>
+			<if test="munum != null and munum != ''">
+				AND a.munum = #{munum}
+			</if>
+			<if test="gjxnum != null and gjxnum != ''">
+				AND a.gjxnum = #{gjxnum}
+			</if>
+			<if test="mbtype1 != null and mbtype1 != ''">
+				AND a.mbtype1 = #{mbtype1}
+			</if>
+			<if test="mbtype2 != null and mbtype2 != ''">
+				AND a.mbtype2 = #{mbtype2}
+			</if>
+			<if test="mbtype3 != null and mbtype3 != ''">
+				AND a.mbtype3 = #{mbtype3}
+			</if>
+			<if test="mbtype4 != null and mbtype4 != ''">
+				AND a.mbtype4 = #{mbtype4}
+			</if>
+			<if test="gjxtype1 != null and gjxtype1 != ''">
+				AND a.gjxtype1 = #{gjxtype1}
+			</if>
+			<if test="gjxtype2 != null and gjxtype2 != ''">
+				AND a.gjxtype2 = #{gjxtype2}
+			</if>
+			<if test="gjxtype3 != null and gjxtype3 != ''">
+				AND a.gjxtype3 = #{gjxtype3}
+			</if>
+			<if test="gjxtype4 != null and gjxtype4 != ''">
+				AND a.gjxtype4 = #{gjxtype4}
+			</if>
+			<if test="attribute3 != null and attribute3 != ''">
+				AND a.attribute3 = #{attribute3}
+			</if>
+			<if test="attribute4 != null and attribute4 != ''">
+				AND a.attribute4 = #{attribute4}
+			</if>
+			<if test="attribute5 != null and attribute5 != ''">
+				AND a.attribute5 = #{attribute5}
+			</if>
+			<if test="attribute6 != null and attribute6 != ''">
+				AND a.attribute6 = #{attribute6}
+			</if>
+			<if test="unit != null and unit != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="delFlag != null and delFlag != ''">
+				AND a.del_flag = #{delFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.gjxnum DESC,a.munum DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListOrderBymBAndJd" resultType="Statistics">
+		SELECT
+			<include refid="statisticsColumns"/>
+		FROM ecpp_statistics a
+		<include refid="statisticsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="officename != null and officename != ''">
+				AND a.officename = #{officename}
+			</if>
+			<if test="officetype != null and officetype != ''">
+				AND a.officetype = #{officetype}
+			</if>
+			<if test="plantype != null and plantype != ''">
+				AND a.plantype = #{plantype}
+			</if>
+			<if test="muprogress != null and muprogress != ''">
+				AND a.muprogress = #{muprogress}
+			</if>
+			<if test="sjprogress != null and sjprogress != ''">
+				AND a.sjprogress = #{sjprogress}
+			</if>
+			<if test="munum != null and munum != ''">
+				AND a.munum = #{munum}
+			</if>
+			<if test="gjxnum != null and gjxnum != ''">
+				AND a.gjxnum = #{gjxnum}
+			</if>
+			<if test="mbtype1 != null and mbtype1 != ''">
+				AND a.mbtype1 = #{mbtype1}
+			</if>
+			<if test="mbtype2 != null and mbtype2 != ''">
+				AND a.mbtype3 = #{mbtype2}
+			</if>
+			<if test="mbtype3 != null and mbtype3 != ''">
+				AND a.mbtype3 = #{mbtype3}
+			</if>
+			<if test="mbtype4 != null and mbtype4 != ''">
+				AND a.mbtype4 = #{mbtype4}
+			</if>
+			<if test="gjxtype1 != null and gjxtype1 != ''">
+				AND a.gjxtype1 = #{gjxtype1}
+			</if>
+			<if test="gjxtype2 != null and gjxtype2 != ''">
+				AND a.gjxtype2 = #{gjxtype2}
+			</if>
+			<if test="gjxtype3 != null and gjxtype3 != ''">
+				AND a.gjxtype3 = #{gjxtype3}
+			</if>
+			<if test="gjxtype4 != null and gjxtype4 != ''">
+				AND a.gjxtype4 = #{gjxtype4}
+			</if>
+			<if test="attribute3 != null and attribute3 != ''">
+				AND a.attribute3 = #{attribute3}
+			</if>
+			<if test="attribute4 != null and attribute4 != ''">
+				AND a.attribute4 = #{attribute4}
+			</if>
+			<if test="attribute5 != null and attribute5 != ''">
+				AND a.attribute5 = #{attribute5}
+			</if>
+			<if test="attribute6 != null and attribute6 != ''">
+				AND a.attribute6 = #{attribute6}
+			</if>
+			<if test="unit != null and unit != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				AND a.update_by = #{updateBy.id}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="delFlag != null and delFlag != ''">
+				AND a.del_flag = #{delFlag}
+			</if>
+			ORDER BY a.sjprogress DESC,a.muprogress ASC,o.code DESC
+		</where>
+	</select>
+	
+	<select id="findAllList" resultType="Statistics">
+		SELECT 
+			<include refid="statisticsColumns"/>
+		FROM ecpp_statistics a
+		<include refid="statisticsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ecpp_statistics(
+			id,
+			officename,
+			officetype,
+			plantype,
+			muprogress,
+			sjprogress,
+			munum,
+			gjxnum,
+			mbtype1,
+			mbtype2,
+			mbtype3,
+			mbtype4,
+			gjxtype1,
+			gjxtype2,
+			gjxtype3,
+			gjxtype4,
+			attribute3,
+			attribute4,
+			attribute5,
+			attribute6,
+			unit,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{officename},
+			#{officetype},
+			#{plantype},
+			#{muprogress},
+			#{sjprogress},
+			#{munum},
+			#{gjxnum},
+			#{mbtype1},
+			#{mbtype2},
+			#{mbtype3},
+			#{mbtype4},
+			#{gjxtype1},
+			#{gjxtype2},
+			#{gjxtype3},
+			#{gjxtype4},
+			#{attribute3},
+			#{attribute4},
+			#{attribute5},
+			#{attribute6},
+			#{unit.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_statistics SET 	
+			officename = #{officename},
+			officetype = #{officetype},
+			plantype = #{plantype},
+			muprogress = #{muprogress},
+			sjprogress = #{sjprogress},
+			munum = #{munum},
+			gjxnum = #{gjxnum},
+			mbtype1 = #{mbtype1},
+			mbtype2 = #{mbtype2},
+			mbtype3 = #{mbtype3},
+			mbtype4 = #{mbtype4},
+			gjxtype1 = #{gjxtype1},
+			gjxtype2 = #{gjxtype2},
+			gjxtype3 = #{gjxtype3},
+			gjxtype4 = #{gjxtype4},
+			attribute3 = #{attribute3},
+			attribute4 = #{attribute4},
+			attribute5 = #{attribute5},
+			attribute6 = #{attribute6},
+			unit = #{unit.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateSta">
+		UPDATE ecpp_statistics SET
+			officename = #{officename},
+			officetype = #{officetype},
+			plantype = #{plantype},
+			muprogress = #{muprogress},
+			sjprogress = #{sjprogress},
+			munum = #{munum},
+			gjxnum = #{gjxnum},
+			mbtype1 = #{mbtype1},
+			mbtype2 = #{mbtype2},
+			mbtype3 = #{mbtype3},
+			mbtype4 = #{mbtype4},
+			gjxtype1 = #{gjxtype1},
+			gjxtype2 = #{gjxtype2},
+			gjxtype3 = #{gjxtype3},
+			gjxtype4 = #{gjxtype4},
+			attribute3 = #{attribute3},
+			attribute4 = #{attribute4},
+			attribute5 = #{attribute5},
+			attribute6 = #{attribute6},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			remarks = #{remarks}
+		WHERE unit = #{unit.id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_statistics SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

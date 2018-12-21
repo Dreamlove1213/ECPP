@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.zzjg.dao.EcppStrformationCopyDao">
+    
+	<sql id="ecppStrformationCopyColumns">
+		a.id AS "id",
+		a.fzrnane AS "fzrnane",
+		a.fzrzhiwei AS "fzrzhiwei",
+		a.fzrdianhua AS "fzrdianhua",
+		a.fzryouxiang AS "fzryouxiang",
+		a.llrnane1 AS "llrnane1",
+		a.oaaccount1 AS "oaaccount1",
+		a.llrbumen1 AS "llrbumen1",
+		a.llrzhiwei1 AS "llrzhiwei1",
+		a.llrdianhua1 AS "llrdianhua1",
+		a.llrshouji1 AS "llrshouji1",
+		a.llryouxiang1 AS "llryouxiang1",
+		a.llrnane2 AS "llrnane2",
+		a.oaaccount2 AS "oaaccount2",
+		a.llrbumen2 AS "llrbumen2",
+		a.llrzhiwei2 AS "llrzhiwei2",
+		a.llrdianhua2 AS "llrdianhua2",
+		a.llrshouji2 AS "llrshouji2",
+		a.llryouxiang2 AS "llryouxiang2",
+		a.unit AS "unit.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks",
+		pp.name AS "user.name",
+		o.name AS "unit.name"
+	</sql>
+	
+	<sql id="ecppStrformationCopyJoins">
+		LEFT JOIN SYS_USER pp ON pp.id = a.create_by
+		LEFT JOIN sys_office o ON o.id = a.unit
+	</sql>
+    
+	<select id="get" resultType="EcppStrformationCopy">
+		SELECT 
+			<include refid="ecppStrformationCopyColumns"/>
+		FROM ecpp_strformation_copy a
+		<include refid="ecppStrformationCopyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="EcppStrformationCopy">
+		SELECT 
+			<include refid="ecppStrformationCopyColumns"/>
+		FROM ecpp_strformation_copy a
+		<include refid="ecppStrformationCopyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="EcppStrformationCopy">
+		SELECT 
+			<include refid="ecppStrformationCopyColumns"/>
+		FROM ecpp_strformation_copy a
+		<include refid="ecppStrformationCopyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ecpp_strformation_copy(
+			id,
+			fzrnane,
+			fzrzhiwei,
+			fzrdianhua,
+			fzryouxiang,
+			llrnane1,
+			oaaccount1,
+			llrbumen1,
+			llrzhiwei1,
+			llrdianhua1,
+			llrshouji1,
+			llryouxiang1,
+			llrnane2,
+			oaaccount2,
+			llrbumen2,
+			llrzhiwei2,
+			llrdianhua2,
+			llrshouji2,
+			llryouxiang2,
+			unit,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{fzrnane},
+			#{fzrzhiwei},
+			#{fzrdianhua},
+			#{fzryouxiang},
+			#{llrnane1},
+			#{oaaccount1},
+			#{llrbumen1},
+			#{llrzhiwei1},
+			#{llrdianhua1},
+			#{llrshouji1},
+			#{llryouxiang1},
+			#{llrnane2},
+			#{oaaccount2},
+			#{llrbumen2},
+			#{llrzhiwei2},
+			#{llrdianhua2},
+			#{llrshouji2},
+			#{llryouxiang2},
+			#{unit.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_strformation_copy SET 	
+			fzrnane = #{fzrnane},
+			fzrzhiwei = #{fzrzhiwei},
+			fzrdianhua = #{fzrdianhua},
+			fzryouxiang = #{fzryouxiang},
+			llrnane1 = #{llrnane1},
+			oaaccount1 = #{oaaccount1},
+			llrbumen1 = #{llrbumen1},
+			llrzhiwei1 = #{llrzhiwei1},
+			llrdianhua1 = #{llrdianhua1},
+			llrshouji1 = #{llrshouji1},
+			llryouxiang1 = #{llryouxiang1},
+			llrnane2 = #{llrnane2},
+			oaaccount2 = #{oaaccount2},
+			llrbumen2 = #{llrbumen2},
+			llrzhiwei2 = #{llrzhiwei2},
+			llrdianhua2 = #{llrdianhua2},
+			llrshouji2 = #{llrshouji2},
+			llryouxiang2 = #{llryouxiang2},
+			unit = #{unit.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_strformation_copy SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

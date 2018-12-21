@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.ecpp.dao.InformationDao">
+    
+	<sql id="informationColumns">
+		a.id AS "id",
+		a.informationtitle AS "informationtitle",
+		a.informationcontent AS "informationcontent",
+		a.attachment AS "attachment",
+		a.status AS "status",
+		a.attribute1 AS "attribute1",
+		a.attribute2 AS "attribute2",
+		a.attribute3 AS "attribute3",
+		a.attribute4 AS "attribute4",
+		a.unit AS "unit.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.del_date AS "delDate",
+		a.remarks AS "remarks",
+		pp.name AS "user.name",
+		o.name AS "unit.name",
+		o.remarks AS "unit.remarks"
+	</sql>
+	
+	<sql id="informationJoins">
+		LEFT JOIN SYS_USER pp ON pp.id = a.create_by
+		LEFT JOIN sys_office o ON o.id = a.unit
+	</sql>
+    
+	<select id="get" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getMonthReportNum" resultType="Information">
+		-- 工作计划
+		SELECT SUM(a) as MonthReportNum FROM(
+		(SELECT SUM(er.count)  as a FROM (
+		SELECT
+		(LENGTH(`attachment`) - LENGTH(REPLACE(`attachment`, "|", ""))) / LENGTH("|") AS "count"
+		FROM
+		ecpp_workprogramme where del_flag = '0'
+		) as er) UNION
+
+		-- 上报信息
+		(SELECT SUM(er.count)  as a FROM (
+		SELECT
+		(LENGTH(`attachment`) - LENGTH(REPLACE(`attachment`, "|", ""))) / LENGTH("|") AS "count"
+		FROM
+		ecpp_information where del_flag = '0'
+		) as er) UNION
+
+		-- 工作动态
+		(SELECT SUM(er.count)  as a FROM (
+		SELECT
+		(LENGTH(`attachment`) - LENGTH(REPLACE(`attachment`, "|", ""))) / LENGTH("|") AS "count"
+		FROM
+		ecpp_information_copy where del_flag = '0'
+		) as er) UNION
+
+
+
+		-- 改进项
+		(SELECT SUM(er.count) as a FROM (
+		SELECT
+		(LENGTH(`attachment`) - LENGTH(REPLACE(`attachment`, "|", ""))) / LENGTH("|") AS "count"
+		FROM
+		ecpp_improvements where del_flag = '0'
+		) as er) UNION
+
+		-- 自评报告
+		(SELECT SUM(er.count) as a FROM (
+		SELECT
+		(LENGTH(`attachement`) - LENGTH(REPLACE(`attachement`, "|", ""))) / LENGTH("|") AS "count"
+		FROM
+		ecpp_selfevluate where del_flag = '0'
+		) as er)) as b
+
+		UNION
+
+		(SELECT COUNT(w) FROM (
+		SELECT
+		i.principal as w
+		FROM
+		ecpp_improvements i
+		WHERE
+		i.planId IN (
+		SELECT
+		p.id
+		FROM
+		ecpp_planinformation p
+		WHERE
+		p.del_flag = '0'
+		) AND i.del_flag = '0' GROUP BY i.principal) as s)
+
+
+		UNION (
+		SELECT COUNT(u) FROM(
+		SELECT
+		p.planPrincipal as u
+		FROM
+		ecpp_planinformation p
+		WHERE
+		p.del_flag = '0'
+		GROUP BY
+		p.planPrincipal) as p
+		)
+	</select>
+	
+	<select id="findList" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="informationtitle != null and informationtitle != ''">
+				AND a.informationtitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationtitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationtitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationtitle},'%')</if>
+			</if>
+			<if test="informationcontent != null and informationcontent != ''">
+				AND a.informationcontent LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationcontent}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationcontent}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationcontent},'%')</if>
+			</if>
+			<if test="attachment != null and attachment != ''">
+				AND a.attachment LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attachment}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attachment}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attachment},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			
+			<if test="attribute4 != null and attribute4 != ''">
+				AND a.attribute4 = #{attribute4}
+			</if>
+			
+			<if test="unit != null and unit.type != null and unit.type != ''">
+				AND o.type = #{unit.type}
+			</if>
+			<if test="unit != null and unit.grade != null and unit.grade != ''">
+				AND o.grade = #{unit.grade}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findList2" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="informationtitle != null and informationtitle != ''">
+				AND a.informationtitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationtitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationtitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationtitle},'%')</if>
+			</if>
+			<if test="informationcontent != null and informationcontent != ''">
+				AND a.informationcontent LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationcontent}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationcontent}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationcontent},'%')</if>
+			</if>
+			<if test="attachment != null and attachment != ''">
+				AND a.attachment LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attachment}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attachment}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attachment},'%')</if>
+			</if>
+			<if test="status != null and status != null">
+				AND a.status = #{status}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findList5" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="informationtitle != null and informationtitle != ''">
+				AND a.informationtitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationtitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationtitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationtitle},'%')</if>
+			</if>
+			<if test="informationcontent != null and informationcontent != ''">
+				AND a.informationcontent LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationcontent}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationcontent}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationcontent},'%')</if>
+			</if>
+			<if test="attachment != null and attachment != ''">
+				AND a.attachment LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attachment}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attachment}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attachment},'%')</if>
+			</if>
+			<if test="status != null and status != null">
+				AND a.status != #{status}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findList3" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="informationtitle != null and informationtitle != ''">
+				AND a.informationtitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationtitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationtitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationtitle},'%')</if>
+			</if>
+			<if test="informationcontent != null and informationcontent != ''">
+				AND a.informationcontent LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationcontent}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationcontent}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationcontent},'%')</if>
+			</if>
+			<if test="attachment != null and attachment != ''">
+				AND a.attachment LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attachment}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attachment}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attachment},'%')</if>
+			</if>
+			<if test="status != null and status != null">
+				AND a.status = #{status}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit != #{unit.id}
+			</if>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findList4" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="informationtitle != null and informationtitle != ''">
+				AND a.informationtitle LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationtitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationtitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationtitle},'%')</if>
+			</if>
+			<if test="informationcontent != null and informationcontent != ''">
+				AND a.informationcontent LIKE 
+					<if test="dbName == 'oracle'">'%'||#{informationcontent}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{informationcontent}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{informationcontent},'%')</if>
+			</if>
+			<if test="attachment != null and attachment != ''">
+				AND a.attachment LIKE 
+					<if test="dbName == 'oracle'">'%'||#{attachment}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{attachment}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{attachment},'%')</if>
+			</if>
+			<if test="status != null and status != null">
+				AND a.status = #{status}
+			</if>
+			<if test="unit != null and unit.id != null and unit.id != ''">
+				AND a.unit = #{unit.id}
+			</if>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Information">
+		SELECT 
+			<include refid="informationColumns"/>
+		FROM ecpp_information a
+		<include refid="informationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO ecpp_information(
+			id,
+			informationtitle,
+			informationcontent,
+			attachment,
+			status,
+			attribute1,
+			attribute2,
+			attribute3,
+			attribute4,
+			unit,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			del_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{informationtitle},
+			#{informationcontent},
+			#{attachment},
+			#{status},
+			#{attribute1},
+			#{attribute2},
+			#{attribute3},
+			#{attribute4},
+			#{unit.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{delDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ecpp_information SET 	
+			informationtitle = #{informationtitle},
+			informationcontent = #{informationcontent},
+			attachment = #{attachment},
+			status = #{status},
+			attribute1 = #{attribute1},
+			attribute2 = #{attribute2},
+			attribute3 = #{attribute3},
+			attribute4 = #{attribute4},
+			unit = #{unit.id},
+			create_by = #{createBy.id},
+			create_date = #{createDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			del_date = #{delDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ecpp_information SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
