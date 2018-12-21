@@ -33,63 +33,17 @@
         }
     </script>
     <style type="text/css">
-        .quire {
-            width: auto;
-            height: 100px;
-            background-color: #eeeeee;
-            text-align: center;
-            line-height: 25px;
-            padding-top: 15px;
-        }
-
-        .glyphicon {
-            top: 40%;
-            left: 40%;
-        }
-
-        .carouselwww {
-            display: block;
-            width: 100%;
-            max-width: 100%;
-        }
-
-        p {
-            margin: 0 0 0px;
-        }
-
-        #jiduan {
-            height: 60px;
-            padding-top: 8px;
-        }
-
-        .heightChange {
-            height: 36px;
-        }
-
-        .row.clearMargin {
-            margin: 0 !important
-        }
-
-        #first, #second, #third, #four, #five {
-            margin-top: 10px;
-        }
-
-        .clearMargin {
-            margin-bottom: 0px;
-        }
-
-        #myTabContent a {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            display: inline-block;
-        }
-
-        @media (min-width: 1200px) {
-            #realBox {
-                display: none;
-            }
-        }
+        .quire {  width: auto;  height: 100px;  background-color: #eeeeee;  text-align: center;  line-height: 25px;  padding-top: 15px;  }
+        .glyphicon {  top: 40%;  left: 40%;  }
+        .carouselwww {  display: block;  width: 100%;  max-width: 100%;  }
+        p {  margin: 0 0 0px;  }
+        #jiduan {  height: 60px;  padding-top: 8px;  }
+        .heightChange {  height: 36px;  }
+        .row.clearMargin {  margin: 0 !important  }
+        #first, #second, #third, #four, #five {  margin-top: 10px;  }
+        .clearMargin {  margin-bottom: 0px;  }
+        #myTabContent a {  text-overflow: ellipsis;  overflow: hidden;  white-space: nowrap;  display: inline-block;  }
+        @media (min-width: 1200px) {  #realBox {  display: none;  }  }
     </style>
 </head>
 <body>
