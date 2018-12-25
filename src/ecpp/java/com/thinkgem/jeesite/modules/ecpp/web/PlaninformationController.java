@@ -1702,7 +1702,7 @@ public class PlaninformationController extends BaseController {
         //以下是layui要求的数据格式中三个参数
         map.put("code",0);
         map.put("msg","");
-        map.put("count",50);
+        map.put("count",60);
         map.put("data",statisticsService.getstatisticsDataPage(statistics));
         return renderString(response,map);
     }

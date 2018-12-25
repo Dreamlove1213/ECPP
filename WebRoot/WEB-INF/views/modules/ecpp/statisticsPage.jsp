@@ -23,13 +23,12 @@
 <script>
     layui.use('table', function(){
         var table = layui.table;
-
         //第一个实例
         table.render({
             elem: '#demo'
-            ,height: 420
+            ,height: 500
             ,url: '${ctx}/ecpp/planinformation/getStatisticsByAjaxPage' //数据接口
-            ,page: true //开启分页
+            ,page: false //开启分页
             ,toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             ,cols: [[ //表头
                 {field: 'officename', title: '机构名称', sort: true, fixed: 'left'}

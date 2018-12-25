@@ -83,8 +83,7 @@
             i.improvementProgress = 100
             GROUP BY
             i.unit
-		) sss
-		ON sss.unit = a.unit LIMIT #{pageIndex},#{pageSize}
+		) sss ON sss.unit = a.unit
 	</select>
 
 	<select id="get" resultType="Statistics">
