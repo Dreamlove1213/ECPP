@@ -127,8 +127,7 @@
                     <ul class="list-group clearMargin">
                         <c:forEach items="${list1}" var="list1" varStatus="i" end="3">
                             <li class="list-group-item">
-                                <span class="badge"><fmt:formatDate value="${list1.createDate}"
-                                                                    pattern="yyyy-MM-dd"/></span>
+                                <span class="badge"><fmt:formatDate value="${list1.createDate}" pattern="yyyy-MM-dd"/></span>
                                 <c:if test="${list1.remarks == '1'}">
                                     <span class="badge" style="color:red;background-color:#fff;">new</span>
                                 </c:if>

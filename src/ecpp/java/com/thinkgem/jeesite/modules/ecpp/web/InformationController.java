@@ -102,7 +102,6 @@ public class InformationController extends BaseController {
 
     /**
      * 首页
-     *
      * @param information
      * @param request
      * @param response
