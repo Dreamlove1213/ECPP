@@ -319,16 +319,12 @@
         }();
 	</script>
 <style type="text/css">
-#btnMenu,#menuContent {
-	display: none !important;
-}
- *{
- 	font-size:16px !important;
- }
- 	.demo-pli-view-list{font-size:22px !important;}
-	.bgColor{background-color: #FF710F;color: #e2e2e2}
-	.fontStyle{color: #0a0903;font-weight: 700; font-size: 23px !important;}
-	.dropdown.bgColor:hover a div span{color: white;}
+#btnMenu,#menuContent {  display: none !important;  }
+ *{ font-size:16px !important;  }
+.demo-pli-view-list{font-size:22px !important;}
+.bgColor{background-color: #FF710F;color: #e2e2e2}
+.fontStyle{color: #0a0903;font-weight: 700; font-size: 23px !important;}
+.dropdown.bgColor:hover a div span{color: white;}
 </style>
 </head>
 <body onclick="hideListNews()" style="overflow:hidden;">
@@ -345,214 +341,51 @@
 						</div>
 					</a>
 				</div>
-				<div class="navbar-content clearfix"
-					<%-- style="margin-left:<c:if test="${fns:getUser().name =='游客'}">0 !important;</c:if>" --%>>
-					<%-- <c:if test="${fns:getUser().name =='游客'}"> --%>
-						<%-- <ul class="nav navbar-top-links pull-left">
-							<li class="dropdown" id="hideListNews"><a href="${ctx}?login">
-									<div class="username hidden-xs">首页</div>
-							</a></li>
-						</ul> --%>
-					<%-- </c:if> --%>
-					<ul class="nav navbar-top-links pull-left"
-						style="display:<%-- <c:if test="${fns:getUser().name =='游客'}">none !important;</c:if> --%>">
+				<div class="navbar-content clearfix">
+					<ul class="nav navbar-top-links pull-left">
 						<li class="tgl-menu-btn"><a class="mainnav-toggle" href="#">
 								<i class="demo-pli-view-list"></i>
 						</a></li>
-						<li class="dropdown">
-							<div class="dropdown-menu dropdown-menu-md">
-								<div class="pad-all bord-btm">
-									<p class="text-semibold text-main mar-no">You have 9
-										notifications.</p>
-								</div>
-								<div class="nano scrollable">
-									<div class="nano-content">
-										<ul class="head-list">
-											<li><a href="#">
-													<div class="clearfix">
-														<p class="pull-left">Database Repair</p>
-														<p class="pull-right">70%</p>
-													</div>
-													<div class="progress progress-sm">
-														<div style="width: 70%;" class="progress-bar">
-															<span class="sr-only">70% Complete</span>
-														</div>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li><a href="#">
-													<div class="clearfix">
-														<p class="pull-left">Upgrade Progress</p>
-														<p class="pull-right">10%</p>
-													</div>
-													<div class="progress progress-sm">
-														<div style="width: 10%;"
-															class="progress-bar progress-bar-warning">
-															<span class="sr-only">10% Complete</span>
-														</div>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li><a class="media" href="#"> <span
-													class="badge badge-success pull-right">90%</span>
-													<div class="media-left">
-														<i class="demo-pli-data-settings icon-2x"></i>
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">HDD is full</div>
-														<small class="text-muted">50 minutes ago</small>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li><a class="media" href="#">
-													<div class="media-left">
-														<i class="demo-pli-file-edit icon-2x"></i>
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">Write a news article</div>
-														<small class="text-muted">Last Update 8 hours ago</small>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li><a class="media" href="#"> <span
-													class="label label-danger pull-right">New</span>
-													<div class="media-left">
-														<i class="demo-pli-speech-bubble-7 icon-2x"></i>
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">Comment Sorting</div>
-														<small class="text-muted">Last Update 8 hours ago</small>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li><a class="media" href="#">
-													<div class="media-left">
-														<i class="demo-pli-add-user-plus-star icon-2x"></i>
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">New User Registered</div>
-														<small class="text-muted">4 minutes ago</small>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li class="bg-gray"><a class="media" href="#">
-													<div class="media-left">
-														<img class="img-circle img-sm" alt="Profile Picture"
-															src="">
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">Lucy sent you a message</div>
-														<small class="text-muted">30 minutes ago</small>
-													</div>
-											</a></li>
-
-											<!-- Dropdown list-->
-											<li class="bg-gray"><a class="media" href="#">
-													<div class="media-left">
-														<img class="img-circle img-sm" alt="Profile Picture"
-															src="">
-													</div>
-													<div class="media-body">
-														<div class="text-nowrap">Jackson sent you a message</div>
-														<small class="text-muted">40 minutes ago</small>
-													</div>
-											</a></li>
-										</ul>
-									</div>
-								</div>
-
-								<!--Dropdown footer-->
-								<div class="pad-all bord-top">
-									<a href="#" class="btn-link text-dark box-block"> <i
-										class="fa fa-angle-right fa-lg pull-right"></i>Show All
-										Notifications
-									</a>
-								</div>
-							</div>
-						</li>
 					</ul>
-					<%--<ul class="nav navbar-top-links pull-left" style="width: 600px;height: 40px;position: absolute;left: 100px;">
-						<marquee behavior="alternate" direction="right" style="line-height: 40px;">
-							<a href="${ctxStatic}/Reporthtml/report.html" target="mainFrame" class="dropdown-toggle text-right">
-								<span style="color:#e2e2e2;">月报展示</span>
-							</a>
-						</marquee>
-					</ul>--%>
 					<ul class="nav navbar-top-links pull-right">
                         <li class="dropdown bgColor">
-                            <%--<a href="${ctx}/ecpp/planinformation/monthReport" target="mainFrame" class="dropdown-toggle text-right">--%>
                             <a href="${ctxStatic}/Reporthtml/report_month11.html" target="_blank" class="dropdown-toggle text-right">
-                                <div class="username hidden-xs"><span class="fontStyle">月报展示</span>
-                                </div></a>
+                                <div class="username hidden-xs"><span class="fontStyle">月报展示</span></div>
+							</a>
                         </li>
 						<c:if test="${fns:getUser().name !='游客'}">
 							<li class="dropdown">
 								<a href="${ctx}?login" class="dropdown-toggle text-right">
 									<c:set var="isRead" value="${sessionScope.isRead}"/>
-									<div class="username hidden-xs">首页
-									</div></a>
+									<div class="username hidden-xs">首页</div>
+								</a>
 							</li>
 						</c:if>
 
-						<li id="dropdown-user" class="dropdown"><a href="#"
-							data-toggle="dropdown" class="dropdown-toggle text-right"> 
-							<span class="pull-right"> 
-								<img class="img-circle img-user media-object" src="${ctxStatic}/indexPageStyle/img/profile-photos/1.png" alt="Profile Picture">
-							</span>
+						<li id="dropdown-user" class="dropdown">
+							<a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+								<span class="pull-right">
+									<img class="img-circle img-user media-object" src="${ctxStatic}/indexPageStyle/img/profile-photos/1.png" alt="Profile Picture">
+								</span>
 								<div class="username hidden-xs" onclick="gotoReport()">您好, ${fns:getUser().name}</div>
-						</a>
-							<%--<div class="dropdown-menu dropdown-menu-md dropdown-menu-right panel-default">
-								&lt;%&ndash;<c:if test="${fns:getUser().name !='游客'}">&ndash;%&gt;
-									<ul class="head-list">
-										<li><a href="${ctx}/sys/user/info" target="mainFrame">
-												<i class="demo-pli-male icon-lg icon-fw"></i>个人信息
-										</a></li>
-										&lt;%&ndash; <li><a href="${ctx}/sys/user/modifyPwd"
-											target="mainFrame"> <!--<span class="badge badge-danger pull-right">9</span> -->
-												<i class="demo-pli-mail icon-lg icon-fw"></i>修改密码
-										</a></li> &ndash;%&gt;
-										&lt;%&ndash; <li><a href="${ctx}/oa/oaNotify/self" target="mainFrame">
-												<!-- <span class="label label-success pull-right">New</span> -->
-												<i class="demo-pli-gear icon-lg icon-fw"></i>我的通知
-										</a></li> &ndash;%&gt;
-									</ul>
-								&lt;%&ndash;</c:if>&ndash;%&gt;
-								<!-- Dropdown footer -->
- 								<div class="pad-all text-right">
-									<a href="${ctx}/logout" class="btn btn-primary">退出</a>
-								</div>
-							</div>--%>
+							</a>
 						</li>
 
-						<li
-							<%-- style="display:<c:if test="${fns:getUser().name =='游客'}">none !important;</c:if>" --%>>
-							<!--  <a href="#" class="aside-toggle">
-                            <i class="demo-pli-bell"></i>
-                        </a> -->
-							<a href="#" id="hideListNews" data-toggle="dropdown"
-							class="aside-toggle"> <i class="demo-pli-bell"></i>
-							<c:if test="${newslist.size() != 0}">
-								<span class="badge badge-header badge-danger"></span>
-							</c:if> 
-						</a>
+						<li>
+							<a href="#" id="hideListNews" data-toggle="dropdown" class="aside-toggle"> <i class="demo-pli-bell"></i>
+								<c:if test="${newslist.size() != 0}">
+									<span class="badge badge-header badge-danger"></span>
+								</c:if>
+							</a>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</header>
 		<div class="boxed">
-			<div id="content-container"
-				<%-- style="padding-left:<c:if test="${fns:getUser().name =='游客'}">0 !important;</c:if>" --%>>
+			<div id="content-container">
 				<div id="page-content">
-					<iframe id="mainFrame" name="mainFrame" src=""
-						style="overflow:visible;" scrolling="yes" frameborder="no"
-						width="100%"></iframe>
+					<iframe id="mainFrame" name="mainFrame" src="" style="overflow:visible;" scrolling="yes" frameborder="no" width="100%"></iframe>
 				</div>
 			</div>
 			<aside id="aside-container">
@@ -571,15 +404,10 @@
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="demo-asd-tab-1">
-									<p class="pad-hor mar-top text-semibold text-main">
-										<!-- <span class="pull-right badge badge-warning">3</span> -->
-										消息
-									</p>
+									<p class="pad-hor mar-top text-semibold text-main">消息</p>
 									<div class="list-group bg-trans" id="infomationContainar">
 										<c:forEach items="${newslist}" var="news">
-											<a
-												href="${ctx}${news.url}"
-												target="mainFrame" class="list-group-item">
+											<a href="${ctx}${news.url}" target="mainFrame" class="list-group-item">
 												<div class="media-left pos-rel">
 													<img class="img-circle img-xs"
 														src="${ctxStatic}/indexPageStyle/img/profile-photos/2.png"
@@ -600,8 +428,7 @@
 									<p class="pad-hor text-semibold text-main">历史消息</p>
 									<div class="list-group bg-trans">
                                         <c:forEach items="${newslisHository}" var="newsHository">
-                                            <a
-                                                    href="${ctx}/ecpp/information/hositoryList"
+                                            <a href="${ctx}/ecpp/information/hositoryList"
                                                     target="mainFrame" class="list-group-item">
                                                 <div class="media-left pos-rel">
                                                     <img class="img-circle img-xs"

@@ -156,8 +156,6 @@
         </div>
     </div>
 </div>
-<input id="officeArray" type="hidden" value="${singleData.officeArray}"/>
-<input id="intArray" type="hidden" value="${singleData.intArray}"/>
 <script src="${ctxStatic}/indexStyle/js/jquery.js"></script>
 <script src="${ctxStatic}/indexStyle/js/popper.js"></script>
 <script src="${ctxStatic}/indexStyle/js/bootstrap.js"></script>

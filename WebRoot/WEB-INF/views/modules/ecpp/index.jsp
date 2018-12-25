@@ -50,7 +50,6 @@
 <body>
 <div class="analysisBox">
     <div class="sl-pagebody">
-
         <div class="banner">
             <div id="myCarousel" class="carousel slide">
                 <!-- 轮播（Carousel）项目 -->
@@ -95,8 +94,7 @@
                     <div class="carousel-inner">
                         <div class="item active" style="height:310px;">
                             <a href="${ctx}/gzdt/ecppInformationCopy/form1?id=afad7b11b378464ca9514fc1e4e51dae"><img
-                                    src="${ctxStatic}/indexStyle/img/index_pic.jpg" class="carouselwww"
-                                    alt="First slide"></a>
+                                    src="${ctxStatic}/indexStyle/img/index_pic.jpg" class="carouselwww" alt="First slide"></a>
                         </div>
                     </div>
                 </div>
@@ -105,20 +103,12 @@
         </div><!-- col-3 -->
         <div class="col-xs-6 col-sm-6" id="textCont">
             <div style="display:inline-block;margin-bottom:5px;" id="realBox">
-                <form:form id="searchForm" style="margin-bottom:0 !important;"
-                           modelAttribute="information"
-                           action="${ctx}/ecpp/information/sousuo" method="post">
-                    <input id="pageNo" name="pageNo" type="hidden"
-                           value="${page.pageNo}"/>
-                    <input id="pageSize" name="pageSize" type="hidden"
-                           value="${page.pageSize}"/>
+                <form:form id="searchForm" style="margin-bottom:0 !important;" modelAttribute="information" action="${ctx}/ecpp/information/sousuo" method="post">
+                    <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+                    <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
                     <div class="input-group">
-                        <form:input path="informationtitle" placeholder="新闻标题"
-                                    htmlEscape="false" maxlength="50"
-                                    class="form-control heightChange"/>
-                        <span class="input-group-btn">
-								<button class="btn btn-default" id="btnSubmit" type="submit">搜索</button>
-							</span>
+                        <form:input path="informationtitle" placeholder="新闻标题" htmlEscape="false" maxlength="50" class="form-control heightChange"/>
+                        <span class="input-group-btn"><button class="btn btn-default" id="btnSubmit" type="submit">搜索</button></span>
                     </div>
                 </form:form>
             </div>
@@ -265,22 +255,21 @@
 </div>
 <div class="analysisBox">
     <div class="row clearMargin" id="jiduan">
-
         <div class="col-xs-6 col-sm-3" style="text-align:center;">
-            <p><%-- ${ecppConfig.firstname} --%>第一阶段&nbsp;&nbsp;&nbsp;</p>
+            <p> ${ecppConfig.firstname} &nbsp;&nbsp;&nbsp;</p>
             <p><fmt:formatDate value="${ecppConfig.firstenddate}" pattern="yyyy-MM-dd"/>&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div class="col-xs-6 col-sm-3" style="text-align:center;">
-            <p><%-- ${ecppConfig.secondname} --%>第二阶段&nbsp;&nbsp;&nbsp;</p>
+            <p> ${ecppConfig.secondname} &nbsp;&nbsp;&nbsp;</p>
             <p><fmt:formatDate value="${ecppConfig.secondenddate}" pattern="yyyy-MM-dd"/>&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div class="clearfix visible-xs-block"></div>
         <div class="col-xs-6 col-sm-3" style="text-align:center;">
-            <p><%-- ${ecppConfig.thirdname} --%>第三阶段&nbsp;&nbsp;&nbsp;</p>
+            <p> ${ecppConfig.thirdname} &nbsp;&nbsp;&nbsp;</p>
             <p><fmt:formatDate value="${ecppConfig.thirdenddate}" pattern="yyyy-MM-dd"/>&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div class="col-xs-6 col-sm-3" style="text-align:center;">
-            <p><%-- ${ecppConfig.fouthname} --%>第四阶段&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <p> ${ecppConfig.fouthname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p><fmt:formatDate value="${ecppConfig.fouthenddate}" pattern="yyyy-MM-dd"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
     </div>
@@ -289,7 +278,6 @@
         style="overflow:visible;" scrolling="no" frameborder="no" onload="iFrameHeight();"
         width="100%"></iframe>--%>
 
-
 <div class="analysisBox">
     <div class="sl-pagebody">
         <div class="Black">统计分析</div>
@@ -297,54 +285,33 @@
             <div class="col-sm-6 col-xl-3">
                 <a href="${ctx}/sys/office/analyzeByType" target="mainFrame">
                     <div class="card pd-20 bg-primary">
-                        <div
-                                class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6
-                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按类型&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                        <div class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按类型&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
                         </div>
-                        <!-- card-header -->
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
                             <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum1}</h3>
                         </div>
-                        <!-- card-body -->
-                        <div
-                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
-                            <div>
-                                <h6 class="tx-white mg-b-0"></h6>
-                            </div>
-                            <div>
-                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum11} </h6>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div><h6 class="tx-white mg-b-0"></h6></div>
+                            <div><h6 class="tx-white mg-b-0"> ${singleData.planTypeNum11}</h6></div>
                         </div>
-                        <!-- -->
                     </div>
                 </a>
-                <!-- card -->
             </div>
-            <!-- col-3 -->
             <div class="col-sm-6 col-xl-3 mg-t-20 mg-sm-t-0">
                 <a href="${ctx}/sys/office/institionOnly?type=2" target="mainFrame">
                     <div class="card pd-20 bg-info">
-                        <div
-                                class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6
-                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按部门&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum1")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum1")}</h6>
+                        <div class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按部门&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum1")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum1")}</h6>
                         </div>
-                        <!-- card-header -->
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
                             <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum2} </h3>
                         </div>
-                        <!-- card-body -->
-                        <div
-                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
-                            <div>
-                                <h6 class="tx-white mg-b-0"></h6>
-                            </div>
-                            <div>
-                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum22} </h6>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div><h6 class="tx-white mg-b-0"></h6></div>
+                            <div><h6 class="tx-white mg-b-0"> ${singleData.planTypeNum22} </h6></div>
                         </div>
                     </div>
                 </a>
@@ -353,15 +320,12 @@
                 <a href="${ctx}/sys/office/institionOnly?type=3" target="mainFrame">
                     <div class="card pd-20 bg-purple">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6
-                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按公司&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum2")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum2")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按公司&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum2")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum2")}</h6>
                         </div>
-                        <!-- card-header -->
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
                             <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum3} </h3>
                         </div>
-                        <!-- card-body -->
                         <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div>
                                 <h6 class="tx-white mg-b-0"></h6>
@@ -373,22 +337,17 @@
                     </div>
                 </a>
             </div>
-            <!-- col-3 -->
             <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
                 <a href="${ctx}/sys/office/checkEchartPlateSix" target="mainFrame">
                     <div class="card pd-20 bg-sl-primary">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6
-                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按板块&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按板块&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
                         </div>
-                        <!-- card-header -->
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
                             <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum4} </h3>
                         </div>
-                        <!-- card-body -->
-                        <div
-                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                        <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div>
                                 <h6 class="tx-white mg-b-0"></h6>
                             </div>
@@ -400,8 +359,7 @@
                 </a>
             </div>
         </div>
-        <div class="row row-sm mg-t-20">
-        </div>
+        <div class="row row-sm mg-t-20"></div>
         <div class="row row-sm mg-t-20">
             <div id="demo" style="width: 100%;height:400px;"></div>
         </div>
@@ -410,8 +368,6 @@
         </div>
     </div>
 </div>
-<input id="officeArray" type="hidden" value="${singleData.officeArray}"/>
-<input id="intArray" type="hidden" value="${singleData.intArray}"/>
 <script src="${ctxStatic}/indexStyle/js/jquery.js"></script>
 <script src="${ctxStatic}/indexStyle/js/popper.js"></script>
 <script src="${ctxStatic}/indexStyle/js/bootstrap.js"></script>
