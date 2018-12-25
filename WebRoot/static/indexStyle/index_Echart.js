@@ -253,3 +253,18 @@ $(document).click(function (event) {
         $(_con1).addClass('aside-in')
     }
 });
+
+$(document).ready(function(){
+    //四方块的数据
+    $.ajax({
+        type: "get",
+        url: "http://localhost:8081/a/ecpp/planinformation/Analysisnew",
+        dateType:"json",
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.info("error: " + data.responseText);
+        }
+    });
+});

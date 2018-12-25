@@ -12,18 +12,8 @@
     <script src="${ctxStatic}/indexStyle/jquery.min.js"></script>
     <script src="${ctxStatic}/indexStyle/bootstrap.min.js"></script>
     <script src="${ctxStatic}/common/clearBoxRight.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/indexStyle/ajaxGetData.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            var liWidth = $("#myTabContent li").width() - 160;
-            var searchBox = $("#myTab").width() - 340;
-            var searchBox1 = $("#myTab").width();
-            $("#ulContent").width(searchBox1);
-            $("#myTabContent a").width(liWidth);
-
-            var boxHeight = $("#textCont").height();
-            $("#indexCarousel img").css("height", boxHeight);
-            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-        });
         function iFrameHeight() {
             var ifm = document.getElementById("chartPage");
             var subWeb = document.frames ? document.frames["chartPage"].document : ifm.contentDocument;
@@ -44,7 +34,8 @@
         #first, #second, #third, #four, #five {  margin-top: 10px;  }
         .clearMargin { margin-bottom: 0px;  }
         #myTabContent a {  text-overflow: ellipsis;  overflow: hidden;  white-space: nowrap;  display: inline-block;  }
-        @media (min-width: 1200px) {  #realBox {  display: none;  }  }
+        @media (min-width: 1200px) {  #realBox {  display: none;  } }
+        .analysisBox a{text-decoration: none;}
     </style>
 </head>
 <body>
@@ -285,15 +276,15 @@
                 <a href="${ctx}/sys/office/analyzeByType" target="mainFrame">
                     <div class="card pd-20 bg-primary">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按类型&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按类型&nbsp;&nbsp;&nbsp;目标数量：<span id="mbToatal"></span>&nbsp;&nbsp;改进项数量：<span id="gjxToatal"></span></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
-                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum1}</h3>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div><h6 class="tx-white mg-b-0"></h6></div>
-                            <div><h6 class="tx-white mg-b-0"> ${singleData.planTypeNum11}</h6></div>
+                            <div><h6 class="tx-white mg-b-0"></h6></div>
                         </div>
                     </div>
                 </a>
@@ -302,15 +293,15 @@
                 <a href="${ctx}/sys/office/institionOnly?type=2" target="mainFrame">
                     <div class="card pd-20 bg-info">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按部门&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum1")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum1")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按部门&nbsp;&nbsp;&nbsp;目标数量：<span id="mbNum1"></span>&nbsp;&nbsp;改进项数量：<span id="gjxNum1"></span></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
-                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum2} </h3>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div><h6 class="tx-white mg-b-0"></h6></div>
-                            <div><h6 class="tx-white mg-b-0"> ${singleData.planTypeNum22} </h6></div>
+                            <div><h6 class="tx-white mg-b-0"></h6></div>
                         </div>
                     </div>
                 </a>
@@ -319,18 +310,18 @@
                 <a href="${ctx}/sys/office/institionOnly?type=3" target="mainFrame">
                     <div class="card pd-20 bg-purple">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按公司&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum2")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum2")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按公司&nbsp;&nbsp;&nbsp;目标数量：<span id="mbNum2"></span>&nbsp;&nbsp;改进项数量：<span id="gjxNum2"></span></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
-                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum3} </h3>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div>
                                 <h6 class="tx-white mg-b-0"></h6>
                             </div>
                             <div>
-                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum33} </h6>
+                                <h6 class="tx-white mg-b-0"></h6>
                             </div>
                         </div>
                     </div>
@@ -340,18 +331,18 @@
                 <a href="${ctx}/sys/office/checkEchartPlateSix" target="mainFrame">
                     <div class="card pd-20 bg-sl-primary">
                         <div class="d-flex justify-content-between align-items-center mg-b-10">
-                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按板块&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                            <h6 class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按板块&nbsp;&nbsp;&nbsp;目标数量：<span id="mbToatal1"></span>&nbsp;&nbsp;改进项数量：<span id="gjxToatal2"></span></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
-                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum4} </h3>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"></h3>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
                             <div>
                                 <h6 class="tx-white mg-b-0"></h6>
                             </div>
                             <div>
-                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum44} </h6>
+                                <h6 class="tx-white mg-b-0"></h6>
                             </div>
                         </div>
                     </div>

@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -399,7 +400,7 @@ public class PlaninformationController extends BaseController {
     }
 
     /**
-     * 计划统计分析(首页最下方的统计图) （第三次重写）
+     * 首页统计分析数据
      *
      * @param planinformation
      * @param model
@@ -407,7 +408,7 @@ public class PlaninformationController extends BaseController {
      */
     @RequiresPermissions("ecpp:planin:view")
     @RequestMapping(value = "Analysisnew")
-    public String Analysisnew(Planinformation planinformation, Model model) {
+    public String Analysisnew(Planinformation planinformation, Model model,HttpServletResponse response) {
         Map<String, Integer> map = new HashMap<String, Integer>();
 
         Integer mbToatal = statisticsService.getSumByPlantype("munum");           //目标总数
@@ -427,7 +428,7 @@ public class PlaninformationController extends BaseController {
         map.put("gjxNum2", gjxNum2);
 
         model.addAttribute("dataMap", map);
-        return "modules/ecpp/part2/informationAnalysis";
+        return  renderString(response,map);
 
     }
 
