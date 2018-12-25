@@ -40,8 +40,9 @@
         #jiduan {  height: 60px;  padding-top: 8px;  }
         .heightChange {  height: 36px;  }
         .row.clearMargin {  margin: 0 !important  }
+        .row{margin-right:0 !important;margin-left: 0 !important;}
         #first, #second, #third, #four, #five {  margin-top: 10px;  }
-        .clearMargin {  margin-bottom: 0px;  }
+        .clearMargin { margin-bottom: 0px;  }
         #myTabContent a {  text-overflow: ellipsis;  overflow: hidden;  white-space: nowrap;  display: inline-block;  }
         @media (min-width: 1200px) {  #realBox {  display: none;  }  }
     </style>
@@ -66,27 +67,6 @@
                     <div class="item">
                         <img src="${ctxStatic}/indexStyle/img/ban_004.png" alt="First slide">
                     </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_005.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_006.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_007.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_008.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_009.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_010.png" alt="First slide">
-                    </div>
-                    <div class="item">
-                        <img src="${ctxStatic}/indexStyle/img/ban_011.png" alt="First slide">
-                    </div>
                 </div>
                 <!-- 轮播（Carousel）导航 -->
                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
@@ -110,44 +90,15 @@
                 <div id="indexCarousel" class="carousel slide">
                     <!-- 轮播（Carousel）指标 -->
                     <ol class="carousel-indicators">
-                        <!-- <li data-target="#indexCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#indexCarousel" data-slide-to="1"></li> -->
-                        <!-- <li data-target="#indexCarousel" data-slide-to="2"></li>
-                        <li data-target="#indexCarousel" data-slide-to="3"></li>
-                        <li data-target="#indexCarousel" data-slide-to="4"></li> -->
                     </ol>
                     <!-- 轮播（Carousel）项目 -->
                     <div class="carousel-inner">
-                        <%-- <div class="item active">
-                            <img src="${ctxStatic}/indexStyle/img/work_1.JPG" class="carouselwww" alt="First slide">
-                        </div> --%>
                         <div class="item active" style="height:310px;">
                             <a href="${ctx}/gzdt/ecppInformationCopy/form1?id=afad7b11b378464ca9514fc1e4e51dae"><img
                                     src="${ctxStatic}/indexStyle/img/index_pic.jpg" class="carouselwww"
                                     alt="First slide"></a>
                         </div>
-                        <%-- <div class="item">
-                            <img src="${ctxStatic}/indexStyle/img/work_2.png" class="carouselwww" alt="Second slide">
-                        </div> --%>
-                        <%-- <div class="item">
-                            <img src="${ctxStatic}/indexStyle/img/banner_img1-3.jpg" class="carouselwww" alt="Third slide">
-                        </div>
-                        <div class="item">
-                            <img src="${ctxStatic}/indexStyle/img/banner_img1-4.jpg" class="carouselwww" alt="Third slide">
-                        </div>
-                        <div class="item">
-                            <img src="${ctxStatic}/indexStyle/img/banner_img1-5.jpg" class="carouselwww" alt="Third slide">
-                        </div> --%>
                     </div>
-                    <!-- 轮播（Carousel）导航 -->
-                    <!-- <a class="left carousel-control" href="#indexCarousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#indexCarousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a> -->
                 </div>
             </div>
 
@@ -179,30 +130,6 @@
                     <li><a href="#third" data-toggle="tab">企业信息</a></li>
                     <li><a href="#four" data-toggle="tab">部门归档</a></li>
                     <li><a href="#five" data-toggle="tab">企业归档</a></li>
-
-
-                    <%-- <li style="float:right;position:relative;margin-left:12px;">
-                        <div style="display:inline-block;" id="realBox">
-                            <form:form id="searchForm" style="margin-bottom:0 !important;"
-                                modelAttribute="information"
-                                action="${ctx}/ecpp/information/sousuo" method="post">
-                                <input id="pageNo" name="pageNo" type="hidden"
-                                    value="${page.pageNo}" />
-                                <input id="pageSize" name="pageSize" type="hidden"
-                                    value="${page.pageSize}" />
-                                <div class="input-group">
-                                    <form:input path="informationtitle" placeholder="新闻标题"
-                                        htmlEscape="false" maxlength="50"
-                                        class="form-control heightChange" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" id="btnSubmit" type="submit">搜索</button>
-                                    </span>
-                                </div>
-                            </form:form>
-                        </div>
-                    </li> --%>
-
-
                 </ul>
             </div>
             <div id="myTabContent" class="tab-content">
@@ -281,8 +208,6 @@
                                         <a href="${ctx}/ecpp/planinformation/a4List2?unit.id=${list4.unit.id}&unit.type=${list4.unit.type}">[第${list4.segment}环节][${list4.unit.remarks}][问题目标和措施]</a>
                                     </c:when>
                                 </c:choose>
-
-                                <%--<a href="${ctx}/ecpp/planinformation/a3List1?remarks=${list4.unit.id}">[第${list4.segment}环节]${list4.unit.remarks}：问题、目标和措施归档</a>--%>
                             </li>
                         </c:forEach>
                         <c:forEach items="${ecppWorkprogrammeCompany}" var="ecppWorkprogrammeCompany" varStatus="k" end="1">
@@ -306,7 +231,6 @@
                             <li class="list-group-item">
                                 <span class="badge blue"><fmt:formatDate value="${list5.createDate}"
                                                                          pattern="yyyy-MM-dd"/></span>
-                                    <%--<a href="${ctx}/ecpp/planinformation/a3List2?remarks=${list5.unit.id}">[第X环节][${list5.unit.remarks}][问题目标和措施]</a>--%>
                                 <c:choose>
                                     <c:when test="${list5.segment =='二'}">
                                         <a href="${ctx}/ecpp/planinformation/a2List2?unit.id=${list5.unit.id}&unit.type=${list5.unit.type}">[第${list5.segment}环节][${list5.unit.remarks}][问题目标和措施]</a>
@@ -331,7 +255,6 @@
                         <c:if test="${not empty list5 || not empty ecppWorkprogrammeList}">
                             <li class="list-group-item changeHeight">
                                 <i class="text-center"><p><a href="${ctx}/ecpp/information/guidangqiyelist">更多>>></a></p></i>
-                                    <%--<i class="text-center"><p><a href="${ctx}/ecpp/planinformation/a3ListWorkPlan">更多>>></a></p></i>--%>
                             </li>
                         </c:if>
                     </ul>
@@ -362,8 +285,151 @@
         </div>
     </div>
 </div>
-<iframe id="chartPage" name="" src="${ctx}/ecpp/planinformation/Analysisnew/"
+<%--<iframe id="chartPage" name="" src="${ctx}/ecpp/planinformation/Analysisnew/"
         style="overflow:visible;" scrolling="no" frameborder="no" onload="iFrameHeight();"
-        width="100%"></iframe>
+        width="100%"></iframe>--%>
+
+
+<div class="analysisBox">
+    <div class="sl-pagebody">
+        <div class="Black">统计分析</div>
+        <div class="row row-sm">
+            <div class="col-sm-6 col-xl-3">
+                <a href="${ctx}/sys/office/analyzeByType" target="mainFrame">
+                    <div class="card pd-20 bg-primary">
+                        <div
+                                class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6
+                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按类型&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                        </div>
+                        <!-- card-header -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum1}</h3>
+                        </div>
+                        <!-- card-body -->
+                        <div
+                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div>
+                                <h6 class="tx-white mg-b-0"></h6>
+                            </div>
+                            <div>
+                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum11} </h6>
+                            </div>
+                        </div>
+                        <!-- -->
+                    </div>
+                </a>
+                <!-- card -->
+            </div>
+            <!-- col-3 -->
+            <div class="col-sm-6 col-xl-3 mg-t-20 mg-sm-t-0">
+                <a href="${ctx}/sys/office/institionOnly?type=2" target="mainFrame">
+                    <div class="card pd-20 bg-info">
+                        <div
+                                class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6
+                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按部门&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum1")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum1")}</h6>
+                        </div>
+                        <!-- card-header -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum2} </h3>
+                        </div>
+                        <!-- card-body -->
+                        <div
+                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div>
+                                <h6 class="tx-white mg-b-0"></h6>
+                            </div>
+                            <div>
+                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum22} </h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
+                <a href="${ctx}/sys/office/institionOnly?type=3" target="mainFrame">
+                    <div class="card pd-20 bg-purple">
+                        <div class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6
+                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按公司&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbNum2")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxNum2")}</h6>
+                        </div>
+                        <!-- card-header -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum3} </h3>
+                        </div>
+                        <!-- card-body -->
+                        <div class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div>
+                                <h6 class="tx-white mg-b-0"></h6>
+                            </div>
+                            <div>
+                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum33} </h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- col-3 -->
+            <div class="col-sm-6 col-xl-3 mg-t-20 mg-xl-t-0">
+                <a href="${ctx}/sys/office/checkEchartPlateSix" target="mainFrame">
+                    <div class="card pd-20 bg-sl-primary">
+                        <div class="d-flex justify-content-between align-items-center mg-b-10">
+                            <h6
+                                    class="tx-11 tx-uppercase mg-b-0 tx-spacing-1 tx-white tx-18l">按板块&nbsp;&nbsp;&nbsp;目标数量：${dataMap.get("mbToatal")}&nbsp;&nbsp;改进项数量：${dataMap.get("gjxToatal")}</h6>
+                        </div>
+                        <!-- card-header -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="sparkline2">5,3,9,6,5,9,7,3,5,2</span>
+                            <h3 class="mg-b-0 tx-white tx-lato tx-bold"> ${singleData.planTypeNum4} </h3>
+                        </div>
+                        <!-- card-body -->
+                        <div
+                                class="d-flex align-items-center justify-content-between mg-t-15 bd-t bd-white-2 pd-t-10">
+                            <div>
+                                <h6 class="tx-white mg-b-0"></h6>
+                            </div>
+                            <div>
+                                <h6 class="tx-white mg-b-0"> ${singleData.planTypeNum44} </h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row row-sm mg-t-20">
+        </div>
+        <div class="row row-sm mg-t-20">
+            <div id="demo" style="width: 100%;height:400px;"></div>
+        </div>
+        <div class="row row-sm mg-t-20">
+            <div id="demo1" style="width: 100%;height:400px;"></div>
+        </div>
+    </div>
+</div>
+<input id="officeArray" type="hidden" value="${singleData.officeArray}"/>
+<input id="intArray" type="hidden" value="${singleData.intArray}"/>
+<script src="${ctxStatic}/indexStyle/js/jquery.js"></script>
+<script src="${ctxStatic}/indexStyle/js/popper.js"></script>
+<script src="${ctxStatic}/indexStyle/js/bootstrap.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery-ui.js"></script>
+<script src="${ctxStatic}/indexStyle/js/perfect-scrollbar.jquery.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery.sparkline.min.js"></script>
+<script src="${ctxStatic}/indexStyle/js/d3.js"></script>
+<script src="${ctxStatic}/indexStyle/js/rickshaw.min.js"></script>
+<script src="${ctxStatic}/indexStyle/js/chart.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery.flot.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery.flot.pie.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery.flot.resize.js"></script>
+<script src="${ctxStatic}/indexStyle/js/jquery.flot.spline.js"></script>
+<script src="${ctxStatic}/indexStyle/js/starlight.js"></script>
+<script src="${ctxStatic}/indexStyle/js/resizesensor.js"></script>
+<script src="${ctxStatic}/indexStyle/js/dashboard.js"></script>
+<script src="${ctxStatic}/indexStyle/js/echarts.js"></script>
+<%--首页柱状统计图js--%>
+<script src="${ctxStatic}/indexStyle/index_Echart.js"></script>
 </body>
 </html>
