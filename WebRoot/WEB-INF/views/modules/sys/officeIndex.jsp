@@ -26,8 +26,7 @@
 	<script type="text/javascript">
 		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
 			callback:{onClick:function(event, treeId, treeNode){
-					var id = treeNode.pId == '0' ? '' :treeNode.pId;
-					$('#officeContent').attr("src","${ctx}/sys/office/list?id="+id+"&parentIds="+treeNode.pIds);
+					$('#officeContent').attr("src","${ctx}/sys/office/list?id="+treeNode.id+"&parentIds="+treeNode.pIds);
 				}
 			}
 		};

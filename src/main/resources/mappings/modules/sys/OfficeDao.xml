@@ -459,7 +459,10 @@
 			LEFT JOIN sys_area ar ON ar.id = a.area_id
 			LEFT JOIN SYS_USER pp ON pp.id = a.primary_person
 			LEFT JOIN SYS_USER dp ON dp.id = a.deputy_person
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="id != null and id != ''">
+			AND a.id = #{id}
+		</if>
 		ORDER BY a.code
 	</select>
 	
