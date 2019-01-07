@@ -7,18 +7,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <link rel="shortcut icon" type="image/x-icon"
 	href="${ctxStatic}/indexStyle/img/favicon.ico" />
-<c:set var="tabmode"
-	value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}" />
+<c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}" />
 <c:if test="${tabmode eq '1'}">
-	<link rel="Stylesheet"
-		href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
-	<script type="text/javascript"
-		src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script>
+	<link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
+	<script type="text/javascript" src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script>
 </c:if>
-    <script type="text/javascript"
-            src="${ctxStatic}/Reporthtml/js/floatingAd.js"></script>
-    <link rel="Stylesheet"
-          href="${ctxStatic}/Reporthtml/css/ad.css" />
+    <script type="text/javascript" src="${ctxStatic}/Reporthtml/js/floatingAd.js"></script>
+    <link rel="Stylesheet" href="${ctxStatic}/Reporthtml/css/ad.css" />
 <script type="text/javascript">
 	$(document).ready(function() {
         $.ajax({
